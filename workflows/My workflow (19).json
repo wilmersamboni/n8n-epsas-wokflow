@@ -1,0 +1,2741 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "// Este código maneja la verificación de Meta (GET) y los mensajes (POST)\nconst query = $node[\"Webhook\"].json[\"query\"];\nconst body = $node[\"Webhook\"].json[\"body\"];\n\n// 1. Si es una solicitud de verificación de Meta (GET)\nif (query && query[\"hub.mode\"] === \"subscribe\") {\n    return [{\n        json: {\n            response: query[\"hub.challenge\"], // Devolvemos el código que Meta espera\n            status: 200\n        }\n    }];\n}\n\n// 2. Si es un mensaje real (POST), seguimos con el flujo normal\nreturn [{\n    json: {\n        body: body,\n        routing: { tipo: 'mensaje_recibido' }\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -4224,
+        -1200
+      ],
+      "id": "e4d08bef-7530-441f-9065-e43108ab810f",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json.response }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        -4000,
+        -1200
+      ],
+      "id": "7f4486e3-a950-4e1d-9339-09790191a052",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.intencion}}",
+                    "rightValue": "enviar_bitacora",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d378d53c-e4d7-4605-8b23-6fb324e7cb67"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "4c249e68-cb27-4180-8170-ccf15e04fb7b",
+                    "leftValue": "={{$json.intencion}}",
+                    "rightValue": "consulta_avance",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "e2ba8339-4270-4526-b259-c849523b9046",
+                    "leftValue": "={{$json.intencion}}",
+                    "rightValue": "consultar_estado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c7e1ae84-d372-43df-bcb5-0e34d71800f0",
+                    "leftValue": "={{$json.intencion}}",
+                    "rightValue": "otro",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "ab1e8c0d-26bb-4339-9968-07e3e93b95ff",
+                    "leftValue": "={{ $json.intencion }}",
+                    "rightValue": "chat_libre",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0d2055b6-c6eb-40ba-adf1-d18ff5837d9f",
+                    "leftValue": "={{ $json.intencion }}",
+                    "rightValue": "verificar_identidad",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "64dd1628-5692-4236-9342-959cf6852fe7",
+                    "leftValue": "={{$json.intencion}}",
+                    "rightValue": "seleccionar_seguimiento",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1632,
+        -48
+      ],
+      "id": "3779fb4e-54c7-4d7d-973d-9100fbd35dcb",
+      "name": "tipoDatoLlega"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer value del payload anidado\nconst value = $json.body?.entry?.[0]?.changes?.[0]?.value;\n\n// Detener si es evento de status\nif (!value || value.statuses) {\n    return [];\n}\n\nconst message = value.messages?.[0];\nconst contact = value.contacts?.[0];\n\nif (!message) {\n    return [];\n}\n\nlet docId = null;\nif (message.type === 'document') {\n    docId = message.document.id;\n} else if (message.type === 'image') {\n    docId = message.image.id;\n}\n\nreturn [{\n    json: {\n        from: message.from,\n        text: message.text?.body || \"\",\n        name: contact?.profile?.name || \"Usuario\",\n        timestamp: message.timestamp,\n        message_id: message.id,\n        documentId: docId,\n        type: message.type\n    }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3776,
+        -272
+      ],
+      "id": "78a0c0e2-165d-4158-9b95-d4a9e3c59c4e",
+      "name": "normalizar mensaje"
+    },
+    {
+      "parameters": {
+        "url": "=https://graph.facebook.com/v21.0/{{ $item(0).$node[\"normalizar mensaje\"].json.documentId }}?access_token=EAAMM4xYMkyYBQ1eZBVPKqMyb0mFC3wixtGTh9b0syYgO5ZCZBQY6NGSVaw7sR3tBFzSLF7wPhPiCJOwJH5lX1YZAksPo0J1lyTOrosdj5fDmGSj7V7UMQZAavhWydo8sJqnIiWh5dCFpqM6p48wnpCL8TaEQ2b3fLU6LbRuNWEAly8sAQFhZB1nTwqJZBuClwZDZD",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1856,
+        -464
+      ],
+      "id": "4f748a01-d5e9-41d0-aeae-bb376cab654b",
+      "name": "HTTP Request4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -1632,
+        -464
+      ],
+      "id": "3086ebdd-e37c-4210-be84-33e85d5d50a8",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CZXzH7CatGucBoOY",
+          "name": "Header Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1408,
+        -464
+      ],
+      "id": "0efa209c-7436-47cd-ab7d-ef127e68021d",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "jsCode": "const texto = $json.text || \"\";\n\nlet limpio = texto\n  .replace(/\\s+/g, \" \")\n  .replace(/[^\\x20-\\x7EáéíóúÁÉÍÓÚñÑ.,;:()\\-]/g, \"\")\n  .trim();\n\nconst MAX_CHARS = 15000;\n\nconst truncado = limpio.length > MAX_CHARS;\n\nif (truncado) {\n  limpio = limpio.slice(0, MAX_CHARS);\n}\n\nreturn [{\n  telefono: $item(0).$node[\"normalizar mensaje\"].json.from,\n  texto_limpio: limpio,\n  truncado,\n  longitud: limpio.length\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1184,
+        -464
+      ],
+      "id": "a08fc04d-1e6b-48cd-88f0-84e78f32b5d5",
+      "name": "limpieza"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Eres un evaluador técnico del SENA.\n\nAnaliza la bitácora del aprendiz.\n\nCRITERIOS:\n\n- Debe existir nombre del aprendiz\n- Debe existir ficha\n- Debe haber mínimo 2 actividades reales\n\nResponde SOLO JSON:\n\n{\n  \"valido\": true/false,\n  \"aprendiz\": \"\",\n  \"ficha\": \"\",\n  \"numero_actividades_validas\": 0,\n  \"score_calidad\": 0-100,\n  \"confianza\": 0-100,\n  \"observaciones\": \"\"\n}\n\nBITÁCORA:\n\n{{ $json.texto_limpio }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "maxTokens": 500,
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -736,
+        -560
+      ],
+      "id": "fa82f16f-ac5d-49de-972d-f60c4b8ab920",
+      "name": "Message a model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "v8HgfQ8p2oWC2rDR",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1️⃣ extraer el texto real del modelo\nlet raw = $json.output?.[0]?.content?.[0]?.text || \"\";\n\n// 2️⃣ asegurar string\nraw = String(raw);\n\n// 3️⃣ limpiar bloques ```json\nraw = raw.replace(/```json/g, \"\").replace(/```/g, \"\").trim();\n\nlet data;\n\ntry {\n  data = JSON.parse(raw);\n} catch (e) {\n  data = {\n    valido: false,\n    confianza: 0,\n    observaciones: \"Error interpretando IA\"\n  };\n}\n\n// 4️⃣ regla de seguridad\nif ((data.confianza ?? 0) < 50) {\n  data.valido = false;\n}\n\nreturn [{\n  telefono: $item(0).$node[\"limpieza\"].json.telefono,\n  evaluacion: data\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -384,
+        -560
+      ],
+      "id": "7664475a-f9be-4325-8d6e-198f4a86a440",
+      "name": "validacion"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{$item(0).$node[\"normalizar mensaje\"].json.from}}",
+        "textBody": "={{ $json.recomendaciones }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        864,
+        -368
+      ],
+      "id": "46c4deb4-fc76-42f2-bcc9-7f149610c15d",
+      "name": "Enviar WhatsApp1",
+      "webhookId": "8f0ab822-96b7-4bd2-8bd9-a16fdc332dc8",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "23EJEv7ATNUKz1Cw",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{$item(0).$node[\"normalizar mensaje\"].json.from}}",
+        "textBody": "={{ $item(0).$node[\"Code in JavaScript1\"].json.respuesta }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        48,
+        -176
+      ],
+      "id": "8fcc8c30-004e-484a-99d2-c310feef1f2e",
+      "name": "Enviar WhatsApp2",
+      "webhookId": "8f0ab822-96b7-4bd2-8bd9-a16fdc332dc8",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "23EJEv7ATNUKz1Cw",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3dc815f8-b3df-46c3-be2b-77ae1c95d135",
+              "leftValue": "={{$json.texto_limpio.length}}",
+              "rightValue": 50,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -960,
+        -464
+      ],
+      "id": "5982049d-5a0d-4bd9-8a29-fd73f3282dae",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{$item(0).$node[\"normalizar mensaje\"].json.from}}",
+        "textBody": "=⚠️ No se pudo leer el contenido de la bitácora.\n\nPor favor envía un PDF legible.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -672,
+        -368
+      ],
+      "id": "7b2813b3-596f-4b40-8c62-5916e18c107d",
+      "name": "Enviar WhatsApp3",
+      "webhookId": "8f0ab822-96b7-4bd2-8bd9-a16fdc332dc8",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "23EJEv7ATNUKz1Cw",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $input.first().json.choices[0].message.content || \"🤖 No pude responder.\";\n\nreturn [{\n  telefono: $item(0).$node[\"normalizar mensaje\"].json.from,\n  respuesta: raw\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -464,
+        -176
+      ],
+      "id": "8b70ee73-0429-4e80-af1d-c5bb63353eee",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  fecha: new Date().toISOString(),\n  telefono: $item(0).$node[\"normalizar mensaje\"].json.from,\n  aprendiz: $json.evaluacion.aprendiz || \"\",\n  ficha: $json.evaluacion.ficha || \"\",\n  valido: $json.evaluacion.valido,\n  score_calidad: $json.evaluacion.score_calidad || 0,\n  confianza: $json.evaluacion.confianza || 0,\n  numero_actividades: $json.evaluacion.numero_actividades_validas || 0,\n  observaciones: $json.evaluacion.observaciones || \"\",\n  longitud_texto: $item(0).$node[\"limpieza\"].json.longitud\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -160,
+        -560
+      ],
+      "id": "1ea9f5dd-6646-4e04-94eb-6987018031e8",
+      "name": "preparar registro"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Eres un instructor del SENA experto en etapa productiva.\n\nUn aprendiz envió una bitácora que NO cumple los requisitos.\n\nDATOS:\n\nAprendiz: {{ $json.evaluacion.aprendiz }}\nFicha: {{ $json.evaluacion.ficha }}\nObservaciones del evaluador: {{ $json.evaluacion.observaciones }}\n\nINSTRUCCIONES:\n\n- Explica de forma clara qué debe corregir\n- Usa tono educativo y respetuoso\n- Da pasos concretos para mejorar\n- Máximo 5 recomendaciones\n- Español claro para aprendices\n\nResponde SOLO con el texto final para el aprendiz."
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        288,
+        -368
+      ],
+      "id": "284bd180-6a9e-4d06-87f4-c51d6498c473",
+      "name": "Message a model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "v8HgfQ8p2oWC2rDR",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let rec = $json.output?.[0]?.content?.[0]?.text || \"\";\nconst telefono = $item(0).$node[\"normalizar mensaje\"].json.telefono;\n\nreturn [{\n  ...$json,\n  telefono,\n  recomendaciones: rec\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        -368
+      ],
+      "id": "0b95450d-f020-41eb-af90-b0f4bd7e60b9",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Eres un clasificador de intenciones para un sistema de bitácoras de aprendices SENA.\n\nClasifica el mensaje del usuario en UNA sola categoría:\n\n- enviar_bitacora → cuando el usuario envía o menciona bitácora, PDF, informe o evidencia\n- consultar_estado → cuando pregunta por fecha de entrega o próxima bitácora y adjunta su identificacion, o dice algo parecido a quiero saber cuando debo entregar mi proxima bitacora mi identificacion es \n- consulta_avance → cuando pregunta por progreso, estadísticas, cuántas lleva, cómo va,\n  o pide ver \"su proceso\", \"cómo va su proceso\", \"cómo estoy\", \"mi avance\", \"mis bitácoras\",\n  \"qué tal voy\", \"en qué voy\", y adjunta su identificacion\n- chat_libre → saludos cortos, preguntas generales sobre el SENA, prácticas, \n  cómo subir o llenar bitácoras. NO incluye preguntas sobre el progreso personal del aprendiz.\n- verificar_identidad → cuando el usuario envía solo números de 6-12 dígitos, o menciona \n  palabras como \"cédula\", \"documento\", \"identificación\", \"me llamo\", \"soy el aprendiz\"\n- seleccionar_seguimiento → cuando el usuario responde con un número corto del 1 al 9, \n  como \"1\", \"2\", \"3\", \"el 2\", \"seguimiento 2\", \"el primero\", \"el segundo\", \"el tercero\"\n- otro → SOLO mensajes completamente incoherentes, spam o que no se entiendan\n\nREGLAS:\n- Responde SOLO JSON válido\n- Sin markdown\n- Sin explicaciones\n- Solo una intención\n\nFormato:\n\n{\n  \"intencion\": \"categoria\"\n}"
+            },
+            {
+              "content": "={{ $item(0).$node[\"normalizar mensaje\"].json.text }}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "maxTokens": 50,
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        -2208,
+        16
+      ],
+      "id": "2e8ad14c-9f3b-438e-aca7-97d898fd9650",
+      "name": "Message a model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "v8HgfQ8p2oWC2rDR",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let raw = $json.output?.[0]?.content?.[0]?.text || \"\";\n\nraw = raw.replace(/```json/g, \"\").replace(/```/g, \"\").trim();\n\nlet data;\n\ntry {\n  data = JSON.parse(raw);\n} catch (e) {\n  data = { intencion: \"otro\" };\n}\n\nreturn [{\n telefono: $item(0).$node[\"normalizar mensaje\"].json.from,\n  texto_usuario: $item(0).$node[\"normalizar mensaje\"].json.text,\n  intencion: data.intencion\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1856,
+        16
+      ],
+      "id": "dc480b95-672c-49e0-b2ba-16c90593a9b9",
+      "name": "extraer_intencion"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4cc358c7-5afe-40f1-8222-0a801c91f0a2",
+              "leftValue": "={{ $item(0).$node[\"normalizar mensaje\"].json.type }}",
+              "rightValue": "document",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2432,
+        -176
+      ],
+      "id": "dedcb9bd-d3fe-4f58-8a9e-691df337a12d",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d60d3e55-324f-4b9f-8a0a-f77ed432cd53",
+              "leftValue": "={{ \n  (() => {\n    const value = $json.body?.entry?.[0]?.changes?.[0]?.value;\n    const msgs = value?.messages;\n    const hasStatus = value?.statuses;\n    \n    return Array.isArray(msgs) && msgs.length > 0 && !hasStatus;\n  })()\n}}",
+              "rightValue": "undefined",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -4000,
+        -176
+      ],
+      "id": "574b5d6c-54ec-417a-9c60-ab4e7eb97518",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const TIEMPO_MUERTO_SEGUNDOS = 10;\n\nconst nodoNormalizar = $item(0).$node[\"normalizar mensaje\"].json;\nconst telefono = nodoNormalizar.from;        // ← era .telefono\nconst texto_usuario = nodoNormalizar.text;   // ← era .texto_usuario\nconst es_documento = nodoNormalizar.type;\nconst documentoId = nodoNormalizar.documentId;\n\nconst ahora = new Date();\nconst registro = $input.first()?.json;\n\nif (!registro || !registro.ultimo_mensaje) {\n  return [{ \n    telefono, texto_usuario, es_documento,\n    documentoId, bloqueado: false, \n    ahora: ahora.toISOString() \n  }];\n}\n\nconst ultimoMensaje = new Date(registro.ultimo_mensaje);\nconst segundosTranscurridos = (ahora - ultimoMensaje) / 1000;\n\nif (segundosTranscurridos < TIEMPO_MUERTO_SEGUNDOS) {\n  return [{ \n    telefono, texto_usuario, es_documento,\n    documentoId, bloqueado: true, \n    segundos_restantes: Math.ceil(TIEMPO_MUERTO_SEGUNDOS - segundosTranscurridos) \n  }];\n}\n\nreturn [{ \n  telefono, texto_usuario, es_documento,\n  documentoId, bloqueado: false, \n  ahora: ahora.toISOString() \n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -3104,
+        -272
+      ],
+      "id": "456d87df-1ebe-4045-927d-cb27761fd788",
+      "name": "tiempo_muerto"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "af6cd2a9-dba7-4858-9723-199768021874",
+              "leftValue": "={{ $json.bloqueado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -2880,
+        -272
+      ],
+      "id": "0f0f5e25-74d2-4d6c-a976-d8ba5cf34bc0",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{$item(0).$node[\"normalizar mensaje\"].json.from}}",
+        "textBody": "⏱️ Por favor espera unos segundos antes de enviar otro mensaje ⌚ ",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -2656,
+        -368
+      ],
+      "id": "151033e1-4553-41b7-bfa1-525d4f2811cd",
+      "name": "Enviar WhatsApp4",
+      "webhookId": "8f0ab822-96b7-4bd2-8bd9-a16fdc332dc8",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "23EJEv7ATNUKz1Cw",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT documento, id_seguimiento_seleccionado\nFROM sesiones_activas\nWHERE telefono = '{{ $json.telefono }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        352,
+        -656
+      ],
+      "id": "64fbd517-2b21-4370-9fcc-01e4c0e5b6af",
+      "name": "Execute a SQL query",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{$item(0).$node[\"normalizar mensaje\"].json.from}}",
+        "textBody": "📎 Recibí tu bitácora, estoy analizándola...  ⏳ Dame unos segundos, esto puede tardar hasta 30 segundos.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -2144,
+        -464
+      ],
+      "id": "9a58912c-4f5e-401d-bce8-b49a871c46d7",
+      "name": "Enviar WhatsApp8",
+      "webhookId": "8f0ab822-96b7-4bd2-8bd9-a16fdc332dc8",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "23EJEv7ATNUKz1Cw",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO sesiones_activas (telefono, ultimo_mensaje, ultima_actividad)\nVALUES ('{{ $json.from }}', '{{ $json.text }}', NOW())\nON CONFLICT (telefono) \nDO UPDATE SET \n  ultimo_mensaje = EXCLUDED.ultimo_mensaje,\n  ultima_actividad = NOW();",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -3552,
+        -272
+      ],
+      "id": "657272cf-da52-4dea-902f-1dfcfb5047ad",
+      "name": "Execute a SQL query3",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "CREATE TABLE aprendices_verificados (\n  id SERIAL PRIMARY KEY,\n  telefono VARCHAR(20) UNIQUE NOT NULL,\n  documento VARCHAR(20) NOT NULL,\n  nombre VARCHAR(100),\n  programa VARCHAR(100),\n  ficha VARCHAR(50),\n  centro_formacion VARCHAR(100),\n  estado_matricula VARCHAR(30),\n  instructor VARCHAR(100),\n  id_seguimiento INT,\n  verificado_en TIMESTAMPTZ DEFAULT NOW(),\n  ultima_actualizacion TIMESTAMPTZ DEFAULT NOW()\n);\n\nCREATE INDEX idx_aprendices_telefono ON aprendices_verificados(telefono);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4224,
+        -1424
+      ],
+      "id": "b38d3af5-70d0-4cd5-ad42-c632a7eac62e",
+      "name": "Execute a SQL query6",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT rol, mensaje FROM historial_chat\nWHERE telefono = '{{ $item(0).$node[\"normalizar mensaje\"].json.from }}'\nAND fecha > NOW() - INTERVAL '15 minutes'\nORDER BY fecha DESC\nLIMIT 6;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1136,
+        -160
+      ],
+      "id": "4f5f006b-713c-4aed-b7a1-8093c86f3b5e",
+      "name": "Execute a SQL query7",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const telefono = $item(0).$node[\"extraer_intencion\"].json.telefono;\nconst texto_usuario = $item(0).$node[\"extraer_intencion\"].json.texto_usuario;\n\n// Obtener historial ordenado cronológicamente\nconst historial = $input.all()\n  .map(i => i.json)\n  .filter(r => r.rol && r.mensaje)\n  .reverse();\n\n// Construir mensajes para el modelo\nconst mensajes = historial.map(h => ({\n  role: h.rol,\n  content: h.mensaje\n}));\n\n// Agregar mensaje actual del usuario\nmensajes.push({\n  role: \"user\",\n  content: texto_usuario\n});\n\nreturn [{\n  json: {\n    telefono,\n    texto_usuario,\n    mensajes\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -976,
+        -176
+      ],
+      "id": "ff0223e9-5503-4abe-9303-249b8c7fac48",
+      "name": "Code in JavaScript5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({  model: \"gpt-4o-mini\",  max_tokens: 500,  messages: [    {      role: \"system\",      content: \"Eres un asistente virtual del SENA, breve y directo.\\n\\nReglas:\\n- Máximo 3 líneas de respuesta\\n- Si saludan, saluda brevemente y pregunta en qué ayudar\\n- No expliques el SENA completo a menos que te lo pidan\\n- Si no es del SENA, redirige en 1 línea\\n- No repitas info ya dada en la conversación\"    },    ...$json.mensajes  ]}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -752,
+        -176
+      ],
+      "id": "0ebe49a4-aa54-41df-94ff-9ce47e449bae",
+      "name": "HTTP Request1",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "q2FqT2BBU4zkwzGH",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO historial_chat (telefono, rol, mensaje)\nVALUES \n  ('{{ $item(0).$node[\"normalizar mensaje\"].json.from }}',\n   'user', \n   '{{ $item(0).$node[\"extraer_intencion\"].json.texto_usuario.replace(/'/g, \"''\") }}'),\n  ('{{ $item(0).$node[\"normalizar mensaje\"].json.from }}', \n   'assistant', \n   '{{ $json.respuesta.replace(/'/g, \"''\") }}');",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -176,
+        -176
+      ],
+      "id": "79b03c4e-5366-4003-b692-af36238071b1",
+      "name": "Execute a SQL query8",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -3776,
+        -80
+      ],
+      "id": "83f18330-a209-44bb-9e4e-5ff3e08af964",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "524454c5-9510-464a-a8bd-b45da45502e1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -4224,
+        -176
+      ],
+      "id": "47147f40-2c82-4525-8fd1-c733b9e7b68b",
+      "name": "Webhook",
+      "webhookId": "524454c5-9510-464a-a8bd-b45da45502e1"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT telefono, ultimo_mensaje \nFROM sesiones_activas \nWHERE telefono = '{{ $item(0).$node[\"normalizar mensaje\"].json.from }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -3328,
+        -272
+      ],
+      "id": "e0404a7c-18f1-47dd-9cab-203a1dab54a9",
+      "name": "Execute a SQL query9",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO sesiones_activas (telefono, ultimo_mensaje, ultima_actividad)\nVALUES ('{{ $json.telefono }}', NOW(), NOW())\nON CONFLICT (telefono)\nDO UPDATE SET \n  ultimo_mensaje = NOW(),\n  ultima_actividad = NOW();",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -2656,
+        -176
+      ],
+      "id": "852032ae-aaef-46ea-8e43-4e250cfc076a",
+      "name": "Execute a SQL query10",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const texto = $item(0).$node[\"normalizar mensaje\"].json.text;\nconst telefono = $item(0).$node[\"normalizar mensaje\"].json.from;\n\n// Extraer solo números del mensaje\nconst cedula = texto.replace(/\\D/g, '');\n\nif (cedula.length < 6 || cedula.length > 12) {\n  return [{\n    json: {\n      telefono,\n      cedula: null,\n      valido: false\n    }\n  }];\n}\n\nreturn [{\n  json: {\n    telefono,\n    cedula,\n    valido: true\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        112
+      ],
+      "id": "be3075c1-6a77-4696-b432-aba7462df147",
+      "name": "extraer_cedula"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ae640e2a-2d82-4a69-b302-1c0793f9b866",
+              "leftValue": "={{ $json.valido }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -976,
+        112
+      ],
+      "id": "d725e338-8c7e-4470-bd54-7017f86a17d4",
+      "name": "If5"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{$item(0).$node[\"normalizar mensaje\"].json.from }}",
+        "textBody": "Por favor ingrese un numero de cédula o identificación valido",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        848,
+        304
+      ],
+      "id": "9f48b8e6-f46f-4b5f-865e-aeabac020b04",
+      "name": "Send message",
+      "webhookId": "fa4c10e2-75d9-461f-810d-c28cfbe4801d",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "PImJsBxI0pO6Rxvb",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://remorselessly-humoursome-duane.ngrok-free.dev/erp/persona/identificacion/{{ $item(0).$node[\"extraer_cedula\"].json.cedula }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $item(0).$node[\"obtener_token\"].json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "ngrok-skip-browser-warning",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -464,
+        16
+      ],
+      "id": "7bca42cc-461a-4023-9aef-9476f2b995d3",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const respuesta = $item(0).$node[\"HTTP Request2\"].json;\nconst seguimiento = $json; // de buscar_seguimiento\nconst telefono = $item(0).$node[\"extraer_cedula\"].json.telefono;\nconst cedula = $item(0).$node[\"extraer_cedula\"].json.cedula;\n\nif (respuesta.mensaje || !respuesta.id_persona) {\n  return [{\n    json: {\n      telefono,\n      encontrado: false,\n      mensaje: `❌ No encontré ningún aprendiz activo con la cédula ${cedula}.`\n    }\n  }];\n}\n\nconst seguimientos = seguimiento?.seguimientos || [];\n\n// Construir lista numerada\nconst lista = seguimientos\n  .map((s, i) => `${i + 1}️⃣ Seguimiento ${s.id_seguimiento} — ${s.estado}`)\n  .join('\\n');\n\nreturn [{\n  json: {\n    telefono,\n    cedula,\n    encontrado: true,\n    seguimientos,\n    nombre: respuesta.nombre,\n    programa: respuesta.programa || \"No registrado\",\n    ficha: String(respuesta.ficha || \"No registrado\"),\n    centro_formacion: respuesta.centro_formacion || \"No registrado\",\n    mensaje:\n`✅ Identidad verificada.\n\n👤 *${respuesta.nombre}*\n📋 Programa: ${respuesta.programa || \"No registrado\"}\n🔢 Ficha: ${respuesta.ficha || \"No registrado\"}\n\n📂 Tienes ${seguimientos.length} seguimientos activos:\n${lista}\n\nResponde con el *número* del seguimiento donde quieres registrar tu bitácora.`\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        16
+      ],
+      "id": "3921f699-7c98-42ca-8b21-42fc892ad45e",
+      "name": "procesar_aprendiz"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "98ebae9a-8f2b-4fea-9999-767c56f002c3",
+              "leftValue": "={{ $json.encontrado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        272,
+        16
+      ],
+      "id": "5b7db81c-1b3d-4db4-9698-1895660b1a19",
+      "name": "If6"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{ $item(0).$node[\"normalizar mensaje\"].json.from }}",
+        "textBody": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        848,
+        112
+      ],
+      "id": "a12cd570-9d6b-48ed-8672-29aa46a52c4b",
+      "name": "Send message1",
+      "webhookId": "917b9c03-edd0-4ca2-ade2-8160c57bd1ab",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "PImJsBxI0pO6Rxvb",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{ $item(0).$node[\"normalizar mensaje\"].json.from }}",
+        "textBody": "={{ $item(0).$node[\"procesar_aprendiz\"].json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1264,
+        -176
+      ],
+      "id": "ec8542e8-18a0-4f09-8205-8a30beb05ebf",
+      "name": "Send message2",
+      "webhookId": "917b9c03-edd0-4ca2-ade2-8160c57bd1ab",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "PImJsBxI0pO6Rxvb",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT token FROM erp_token\nWHERE expira_en > NOW()\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -752,
+        16
+      ],
+      "id": "dc02fdaf-2564-4d2c-a36d-2a50e4a00338",
+      "name": "obtener_token",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO conversaciones (telefono, intencion, mensaje_usuario, respuesta_bot)\nVALUES (\n  '{{ $item(0).$node[\"normalizar mensaje\"].json.from }}',\n  '{{ $item(0).$node[\"extraer_intencion\"].json.intencion }}',\n  '{{ $item(0).$node[\"normalizar mensaje\"].json.text }}',\n  '{{ $json.respuesta }}'\n);",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1488,
+        -128
+      ],
+      "id": "8ea3002e-6686-4290-bd3a-fdf2668921f9",
+      "name": "Execute a SQL query13",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE sesiones_activas \nSET ultimo_mensaje = NOW() - INTERVAL '10 seconds'\nWHERE telefono = '{{ $item(0).$node[\"normalizar mensaje\"].json.from }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1904,
+        208
+      ],
+      "id": "56898988-2bdb-4113-985c-a750453f5f42",
+      "name": "Execute a SQL query14",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const registro = $input.first()?.json;\nconst preparar = $item(0).$node[\"preparar registro\"].json;\n\nconst id_seguimiento = registro?.id_seguimiento_seleccionado || null;\n\nreturn [{\n  json: {\n    telefono: preparar.telefono,\n    documento: registro?.documento || null,\n    id_seguimiento,\n    valido: preparar.valido,\n    score_calidad: preparar.score_calidad,\n    confianza: preparar.confianza,\n    numero_actividades: preparar.numero_actividades,\n    observaciones: preparar.observaciones,\n    aprendiz: preparar.aprendiz,\n    ficha: preparar.ficha,\n    estado: preparar.valido ? \"aceptada\" : \"rechazada\",\n    tiene_seguimiento: !!id_seguimiento\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        640,
+        -656
+      ],
+      "id": "1b6a5c12-2cbf-4d51-a33f-ce73efaf867c",
+      "name": "preparar_bitacora"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "3efefa80-5f75-4586-9d06-bbff8dc5e02b",
+              "leftValue": "={{ $json.tiene_seguimiento }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": "=",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        864,
+        -656
+      ],
+      "id": "e57c6ec4-f264-480b-8f45-6df206281515",
+      "name": "If7"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://remorselessly-humoursome-duane.ngrok-free.dev/seguimiento/bitacora/registrar",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $item(0).$node[\"obtener_token_bitacora\"].json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "ngrok-skip-browser-warning",
+              "value": "true"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ JSON.stringify({\n  fecha: new Date().toISOString().split('T')[0],\n  bitacora_pdf: $item(0).$node[\"preparar_bitacora\"].json.observaciones,\n  fk_seguimiento: $item(0).$node[\"preparar_bitacora\"].json.id_seguimiento,\n  estado: $item(0).$node[\"preparar_bitacora\"].json.estado\n}) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1312,
+        -752
+      ],
+      "id": "d8a79677-1e08-439b-b00b-fa4d6a7b388d",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "-- En PostgreSQL\nDROP TABLE IF EXISTS aprendices_verificados;\nDROP TABLE IF EXISTS bitacoras;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -4224,
+        -976
+      ],
+      "id": "7746fd2c-4019-41c1-8b81-8cf7bb44974f",
+      "name": "Execute a SQL query16",
+      "alwaysOutputData": true,
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT token FROM erp_token\nWHERE expira_en > NOW()\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1088,
+        -752
+      ],
+      "id": "cc1c4f4c-b3b3-4a94-a546-008125dca7e8",
+      "name": "obtener_token_bitacora",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://remorselessly-humoursome-duane.ngrok-free.dev/seguimiento/seguimiento/por-cedula/{{ $item(0).$node[\"extraer_cedula\"].json.cedula }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $item(0).$node[\"obtener_token\"].json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "ngrok-skip-browser-warning",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -176,
+        16
+      ],
+      "id": "b7efd2bf-ef80-4dda-98c6-c2c0e48ea1e1",
+      "name": "buscar_seguimiento"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{ $json.telefono }}",
+        "textBody": "={{ $json.message }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1760,
+        -752
+      ],
+      "id": "2fda55bf-1824-466e-9198-0607f99ad5d5",
+      "name": "Send message3",
+      "webhookId": "cb206ac8-45c0-43cb-8618-bc2c5171b1c8",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "PImJsBxI0pO6Rxvb",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $node[\"preparar_bitacora\"].json;\nconst telefono= $item(0).$node[\"preparar_bitacora\"].json.telefono\nconst mensaje = `✅ Bitácora registrada exitosamente.\n\n👤 Aprendiz: ${data.aprendiz}\n🎯 Calidad: ${data.score_calidad}%\n🧾 Actividades válidas: ${data.numero_actividades}\n📌 Estado: APROBADA\n\n📝 ${data.observaciones}\n\nUn instructor hará la revisión final. ¡Sigue así! 💪`;\n\nreturn [{\n  \n  json: {\n    telefono: telefono,\n    message: mensaje\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1536,
+        -752
+      ],
+      "id": "6814d031-f2c7-421e-9099-ec0827d75907",
+      "name": "Code in JavaScript3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0b1985a1-3254-40b0-b9ad-48871d7ca6e2",
+              "leftValue": "={{ $json.valido }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        64,
+        -560
+      ],
+      "id": "b63bc75b-d189-466d-97df-3f69392ca65d",
+      "name": "If8"
+    },
+    {
+      "parameters": {
+        "jsCode": "const telefono = $item(0).$node[\"normalizar mensaje\"].json.from;\n\nreturn [{\n  telefono,\n  respuesta: \n`📎 Para enviar tu bitácora adjunta el archivo PDF directamente en este chat.\n\nAsegúrate que el PDF:\n✅ Sea legible\n✅ Tenga tu nombre completo\n✅ Tenga tu número de ficha\n✅ Tenga mínimo 2 actividades descritas\n\nCuando lo tengas listo, ¡envíalo! 😊`\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -624,
+        176
+      ],
+      "id": "563d75cc-8178-406f-bc05-756128761ea4",
+      "name": "Code in JavaScript12"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{$item(0).$node[\"normalizar mensaje\"].json.from}}",
+        "textBody": "={{ $json.respuesta }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -256,
+        352
+      ],
+      "id": "58a49e56-37d4-4773-a5b5-6d394df7edd1",
+      "name": "Enviar WhatsApp14",
+      "webhookId": "8f0ab822-96b7-4bd2-8bd9-a16fdc332dc8",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "23EJEv7ATNUKz1Cw",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json;\nconst telefono = $item(0).$node[\"extraer_intencion\"].json.telefono;\nconst bitacoras = data.bitacoras || [];\n\nif (bitacoras.length === 0) {\n  return [{ json: {\n    telefono,\n    respuesta: \"Aún no tienes bitácoras registradas. 📭\"\n  }}];\n}\n\nconst ultimaFecha = bitacoras\n  .map(b => new Date(b.fecha))\n  .sort((a, b) => b - a)[0];\n\nconst proxima = new Date(ultimaFecha);\nproxima.setMonth(proxima.getMonth() + 1);\n\nreturn [{ json: {\n  telefono,\n  respuesta: `📅 Tu próxima bitácora debe entregarse el ${proxima.toLocaleDateString(\"es-CO\")}.`\n}}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        624
+      ],
+      "id": "16e7db99-4507-4393-bcfc-d410bce0eb3b",
+      "name": "Code in JavaScript13"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{ $item(0).$node['normalizar mensaje'].json.from }}",
+        "textBody": "=Lo siento, no entendí tu mensaje 🤔  Puedo ayudarte con: 📎 Enviar tu bitácora 📊 Ver tu avance 📅 Tu próxima fecha de entrega",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -1120,
+        960
+      ],
+      "id": "fb1c125e-7f5c-4bd0-8982-b81767c3a50d",
+      "name": "Send message4",
+      "webhookId": "03cd81b3-247c-4569-9f6d-fe2789213a02",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "PImJsBxI0pO6Rxvb",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE sesiones_activas\nSET seguimientos_json = '{{ $json.seguimientos_json }}',\n    documento = '{{ $item(0).$node[\"extraer_cedula\"].json.cedula }}'\nWHERE telefono = '{{ $item(0).$node[\"procesar_aprendiz\"].json.telefono }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        976,
+        -176
+      ],
+      "id": "84b90fea-106c-4f9d-96d0-b7136312d4ff",
+      "name": "Execute a SQL query1",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const aprendiz = $item(0).$node[\"procesar_aprendiz\"].json;\nreturn [{\n  json: {\n    telefono: aprendiz.telefono,\n    seguimientos_json: JSON.stringify(aprendiz.seguimientos)\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -176
+      ],
+      "id": "e21b99d8-a75e-43af-9f2b-efca542581e3",
+      "name": "Code in JavaScript4"
+    },
+    {
+      "parameters": {
+        "jsCode": "const texto = $item(0).$node[\"normalizar mensaje\"].json.text.trim();\nconst telefono = $item(0).$node[\"normalizar mensaje\"].json.from;\nconst opcion = parseInt(texto.replace(/\\D/g, ''));\n\nif (isNaN(opcion) || opcion < 1 || opcion > 9) {\n  return [{ json: { telefono, valido: false } }];\n}\n\nreturn [{ json: { telefono, opcion, valido: true } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1200,
+        1184
+      ],
+      "id": "1f3aa1e7-a328-4083-9178-94045943745a",
+      "name": "extraer_opcion"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT seguimientos_json, esperando_seguimiento\nFROM sesiones_activas\nWHERE telefono = '{{ $json.telefono }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -992,
+        1184
+      ],
+      "id": "b35a464f-4e17-4176-bb1e-4f30745aa2b4",
+      "name": "Execute a SQL query2",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const opcion = $item(0).$node[\"extraer_opcion\"].json.opcion;\nconst telefono = $item(0).$node[\"extraer_opcion\"].json.telefono;\nconst valido = $item(0).$node[\"extraer_opcion\"].json.valido;\n\nif (!valido) {\n  return [{ json: {\n    telefono,\n    guardado: false,\n    mensaje: \"❌ Opción inválida. Responde con 1, 2 o 3.\"\n  }}];\n}\n\nlet seguimientos = [];\ntry {\n  seguimientos = JSON.parse($json.seguimientos_json || \"[]\");\n} catch(e) {}\n\nconst seleccionado = seguimientos[opcion - 1];\n\nif (!seleccionado) {\n  return [{ json: {\n    telefono,\n    guardado: false,\n    mensaje: `❌ No existe la opción ${opcion}. Elige entre 1 y ${seguimientos.length}.`\n  }}];\n}\n\nreturn [{ json: {\n  telefono,\n  guardado: true,\n  id_seguimiento: seleccionado.id_seguimiento,\n  mensaje: `✅ Seguimiento ${seleccionado.id_seguimiento} seleccionado.\\n\\nAhora envía tu bitácora en PDF 📎`\n}}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -784,
+        1184
+      ],
+      "id": "7e136782-6d9e-4947-9d24-9183e7ace495",
+      "name": "resolver_seguimiento"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE sesiones_activas\nSET id_seguimiento_seleccionado = {{ $json.id_seguimiento }},\n    esperando_seguimiento = false\nWHERE telefono = '{{ $json.telefono }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -144,
+        1184
+      ],
+      "id": "0e3aaaf6-660f-4446-8e17-2df14f46727e",
+      "name": "guardar__seleccion",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{ $item(0).$node['normalizar mensaje'].json.from }}",
+        "textBody": "={{ $item(0).$node['resolver_seguimiento'].json.mensaje }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        64,
+        1184
+      ],
+      "id": "aee2e916-0d07-4a97-8ada-049d84ace105",
+      "name": "Send message5",
+      "webhookId": "03cd81b3-247c-4569-9f6d-fe2789213a02",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "PImJsBxI0pO6Rxvb",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "c4208f68-0f31-465d-9ad7-5f96d691d190",
+              "leftValue": "={{ $json.guardado }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -576,
+        1184
+      ],
+      "id": "7847b455-ea4a-40d9-b3eb-77844ec2a2de",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "url": "=https://remorselessly-humoursome-duane.ngrok-free.dev/seguimiento/seguimiento/bitacoras-por-cedula/{{ $item(0).$node['obtener_documento'].json.documento }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $item(0).$node[\"obtener_token1\"].json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "ngrok-skip-browser-warning",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -880,
+        432
+      ],
+      "id": "8478821b-3b58-4a0a-b95d-4965c5ed3d41",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT documento FROM sesiones_activas\nWHERE telefono = '{{ $item(0).$node[\"extraer_intencion\"].json.telefono }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1216,
+        416
+      ],
+      "id": "a3b87efe-7d5a-4d09-a266-cdf94b735b89",
+      "name": "obtener_documento",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT token FROM erp_token\nWHERE expira_en > NOW()\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1056,
+        432
+      ],
+      "id": "a4ee1b79-1b0a-4021-85be-c631aa8b7733",
+      "name": "obtener_token1",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json; // viene del HTTP Request\nconst telefono = $item(0).$node[\"extraer_intencion\"].json.telefono;\n\nconst bitacoras = data.bitacoras || [];\nconst total = bitacoras.length;\n\nif (total === 0) {\n  return [{ json: {\n    telefono,\n    respuesta: \"Aún no tienes bitácoras registradas. 📭\"\n  }}];\n}\n\nconst aprobadas = bitacoras.filter(b => b.estado === 'aceptada').length;\nconst pendientes = bitacoras.filter(b => b.estado === 'pendiente').length;\nconst rechazadas = bitacoras.filter(b => b.estado === 'rechazada').length;\n\nconst ultimaFecha = bitacoras\n  .map(b => new Date(b.fecha))\n  .sort((a, b) => b - a)[0];\n\nconst proxima = new Date(ultimaFecha);\nproxima.setMonth(proxima.getMonth() + 1);\n\nconst mensaje = `📊 Estado de tus bitácoras, ${data.nombre}:\n\n🧾 Total enviadas: ${total}\n✅ Aceptadas: ${aprobadas}\n⏳ Pendientes: ${pendientes}\n❌ Rechazadas: ${rechazadas}\n\n📅 Próxima entrega estimada: ${proxima.toLocaleDateString(\"es-CO\")}\n\n¡Sigue así! 💪`;\n\nreturn [{ json: { telefono, respuesta: mensaje } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -656,
+        432
+      ],
+      "id": "9786cbe5-f941-471b-8d92-75ccc808564a",
+      "name": "consulta_total1"
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{ $item(0).$node['normalizar mensaje'].json.from }}",
+        "textBody": "=$item(0).$node[\"resolver_seguimiento\"].json.mensaje",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        -368,
+        1280
+      ],
+      "id": "4a081b46-5cdc-42ed-b0fa-4a69dfd5b4f5",
+      "name": "Send message6",
+      "webhookId": "d38f129b-fec7-4fdc-9550-cece6f89df49",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "PImJsBxI0pO6Rxvb",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "1005758815954700",
+        "recipientPhoneNumber": "={{ $item(0).$node[\"normalizar mensaje\"].json.from }}",
+        "textBody": "⚠️ No pudimos registrar tu bitácora porque no estás verificado.\\n\\nEnvía tu número de cédula para verificarte primero.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1.1,
+      "position": [
+        1072,
+        -560
+      ],
+      "id": "3a230ed5-25d0-444b-b4cf-16937c6de618",
+      "name": "Send message7",
+      "webhookId": "31c044b0-0ff8-4f89-a309-0c642be66f01",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "PImJsBxI0pO6Rxvb",
+          "name": "WhatsApp account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://remorselessly-humoursome-duane.ngrok-free.dev/seguimiento/seguimiento/bitacoras-por-cedula/{{ $item(0).$node['obtener_documento1'].json.documento }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{ $item(0).$node[\"obtener_token2\"].json.token }}"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "ngrok-skip-browser-warning",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -848,
+        688
+      ],
+      "id": "1caba237-2a2d-4f81-92d7-de768b877aa4",
+      "name": "HTTP Request6"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT documento FROM sesiones_activas\nWHERE telefono = '{{ $item(0).$node[\"extraer_intencion\"].json.telefono }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1168,
+        672
+      ],
+      "id": "721f5264-da55-46b3-96aa-d310b6a0cae1",
+      "name": "obtener_documento1",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT token FROM erp_token\nWHERE expira_en > NOW()\nLIMIT 1;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1008,
+        688
+      ],
+      "id": "45d76f8c-4c48-4aa1-b484-687627b8b926",
+      "name": "obtener_token2",
+      "credentials": {
+        "postgres": {
+          "id": "6JoTcrwO4rJrideS",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "normalizar mensaje": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "tipoDatoLlega": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript12",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "obtener_documento",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "obtener_documento1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute a SQL query7",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "extraer_cedula",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "extraer_opcion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "limpieza",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "limpieza": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "validacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "validacion": {
+      "main": [
+        [
+          {
+            "node": "preparar registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar WhatsApp3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "preparar registro": {
+      "main": [
+        [
+          {
+            "node": "If8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model2": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model3": {
+      "main": [
+        [
+          {
+            "node": "extraer_intencion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraer_intencion": {
+      "main": [
+        [
+          {
+            "node": "tipoDatoLlega",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp8",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "normalizar mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "tiempo_muerto": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Execute a SQL query10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp1": {
+      "main": [
+        []
+      ]
+    },
+    "Enviar WhatsApp3": {
+      "main": [
+        []
+      ]
+    },
+    "Enviar WhatsApp2": {
+      "main": [
+        []
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "preparar_bitacora",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp8": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query3": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query7": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript5": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query8": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query9": {
+      "main": [
+        [
+          {
+            "node": "tiempo_muerto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query10": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraer_cedula": {
+      "main": [
+        [
+          {
+            "node": "If5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If5": {
+      "main": [
+        [
+          {
+            "node": "obtener_token",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "buscar_seguimiento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "procesar_aprendiz": {
+      "main": [
+        [
+          {
+            "node": "If6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If6": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obtener_token": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message2": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query13",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute a SQL query14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message1": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query13",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Execute a SQL query14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "preparar_bitacora": {
+      "main": [
+        [
+          {
+            "node": "If7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If7": {
+      "main": [
+        [
+          {
+            "node": "obtener_token_bitacora",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obtener_token_bitacora": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "buscar_seguimiento": {
+      "main": [
+        [
+          {
+            "node": "procesar_aprendiz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Send message3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If8": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript12": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp14": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript13": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query1": {
+      "main": [
+        [
+          {
+            "node": "Send message2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript4": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "extraer_opcion": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query2": {
+      "main": [
+        [
+          {
+            "node": "resolver_seguimiento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "resolver_seguimiento": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "guardar__seleccion": {
+      "main": [
+        [
+          {
+            "node": "Send message5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "guardar__seleccion",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send message6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request5": {
+      "main": [
+        [
+          {
+            "node": "consulta_total1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obtener_documento": {
+      "main": [
+        [
+          {
+            "node": "obtener_token1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obtener_token1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "consulta_total1": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message5": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message6": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obtener_documento1": {
+      "main": [
+        [
+          {
+            "node": "obtener_token2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "obtener_token2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request6": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "lY6DjYW5nlJA2glP"
+  },
+  "versionId": "536cfcbd-0277-48de-86ea-55572ba9573e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2304d7d76228d43453242ce64d5d70e6cdc966aaa6552fd68a0120c660c31917"
+  },
+  "id": "EUtyCRI7toCwnR0o",
+  "tags": []
+}
